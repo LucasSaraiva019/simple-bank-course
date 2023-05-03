@@ -80,9 +80,36 @@ func (store *Store) TransferTransaction(ctx context.Context, arg TransferTransac
 		if err != nil {
 			return err
 		}
-
+		if arg.FromAccountID < arg.ToAccountID {
+			result.FromAccount, result.ToAccount, err = addMoney(ctx, q, arg.FromAccountID, -arg.Amount, arg.ToAccountID, arg.Amount)
+		} else {
+			result.ToAccount, result.FromAccount, err = addMoney(ctx, q, arg.ToAccountID, arg.Amount, arg.FromAccountID, -arg.Amount)
+		}
 		return nil
 	})
 
 	return result, err
+}
+
+func addMoney(
+	ctx context.Context,
+	q *Queries,
+	fromAccountID int64,
+	fromAmount int64,
+	toAccountID int64,
+	toAmount int64,
+) (fromAccount Account, toAccount Account, err error) {
+	fromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+		ID:     fromAccountID,
+		Amount: fromAmount,
+	})
+	if err != nil {
+		return
+	}
+
+	toAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+		ID:     toAccountID,
+		Amount: toAmount,
+	})
+	return
 }
