@@ -17,4 +17,7 @@ sqlc:
 test: 
 	go test -v -cover ./...
 
-.PHONY: up createdb dropdb migrateup migratedown sqlc
+server:
+	go run cmd/simple-bank-server/main.go
+
+.PHONY: up createdb dropdb migrateup migratedown sqlc server
