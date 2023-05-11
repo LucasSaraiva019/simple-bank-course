@@ -15,8 +15,8 @@ jobs:
      postgres:
        image: postgres:latest
        env:
-         POSTGRES_USER: example
-         POSTGRES_PASSWORD: example_pass
+         POSTGRES_USER: root
+         POSTGRES_PASSWORD: secret
          POSTGRES_DB: simple_bank
        ports:
         - 5432:5432
