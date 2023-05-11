@@ -1,3 +1,6 @@
+postgres:
+	docker run --name postgres --network bank-network -p 5432:5432 -e POSTGRES_USER=example -e POSTGRES_PASSWORD=example_pass -d postgres:14-alpine
+
 createdb:
 	docker exec -it golang-database-1 createdb --username=example --owner=example simple_bank
 
